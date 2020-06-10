@@ -31,7 +31,7 @@ public class Simulation {
 					
 						int aliveNeighbours = countAliveNeighbours(x,y);
 						
-						if(stepState(x,y) == 1) { // Live Cell Conditions
+						if(getCellState(x,y) == 1) { // Live Cell Conditions
 							if(aliveNeighbours < 2) //Under Population Condition
 								newBoard[x][y] = 0;
 							else if(aliveNeighbours == 2 || aliveNeighbours == 3) //Keeping Alive Condition
@@ -54,22 +54,22 @@ public class Simulation {
 	public int countAliveNeighbours(int x, int y) {
 		int count=0;
 		
-		count += stepState(x-1,y-1);
-		count += stepState(x,y-1);
-		count += stepState(x+1,y-1);
+		count += getCellState(x-1,y-1);
+		count += getCellState(x,y-1);
+		count += getCellState(x+1,y-1);
 		
-		count += stepState(x-1,y);
-		count += stepState(x+1,y);
+		count += getCellState(x-1,y);
+		count += getCellState(x+1,y);
 		
-		count += stepState(x-1,y+1);
-		count += stepState(x,y+1);
-		count += stepState(x+1,y+1);
+		count += getCellState(x-1,y+1);
+		count += getCellState(x,y+1);
+		count += getCellState(x+1,y+1);
 		
 		return count;
 	}
 	
 	//Preventing the countAliveNeighbours function from going away from the board boundaries
-	public int stepState(int x, int y) {
+	public int getCellState(int x, int y) {
 	
 		if(x < 0 || x >= width)
 			return 0;
