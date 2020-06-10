@@ -109,30 +109,25 @@ public class Simulation {
 	}
 	
 	public void setAlive(int x, int y) {
-		this.board[x][y] = 1;
+	    this.setCellState(x, y, 1);
 	}
 
 	public void setDead(int x, int y) {
-		this.board[x][y] = 0;
+		this.setCellState(x, y, 0);
 	}
 	
-	public static void main(String[] args) {
+	//Preventing the setting a cell state functionality if it goes away from the board boundaries
+	
+	public void setCellState(int x, int y, int state) {
+		if(x < 0 || x >= width)
+			return;
 		
-		Simulation s = new Simulation(8, 5);
+		if(y < 0 || y >= height)
+			return;
 		
-		s.setAlive(2, 2);
-		s.setAlive(3, 2);
-		s.setAlive(4, 2);
+		this.board[x][y] = state;
 		
-		s.printBoard();
-		
-		s.step();
-		
-		s.printBoard();
-		
-		s.step();
-		
-		s.printBoard();
 	}
+	
 	
 }

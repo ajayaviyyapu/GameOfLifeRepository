@@ -1,11 +1,16 @@
 package com.ajaya;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.NonInvertibleTransformException;
 
 //This is going to get displayed in the Java Applet
 
@@ -19,6 +24,8 @@ public class MainView extends VBox{
 	
 	private Simulation simulation;
 	
+	private int drawMode = 1; //To check whether to draw live cells or dead cells
+	
 	public MainView() {
 		
 		this.stepButton = new Button("step");
@@ -28,25 +35,54 @@ public class MainView extends VBox{
 		});
 		
 		this.canvas = new Canvas(400, 400);
+		//On click of the grid activate the cell.
+		this.canvas.setOnMousePressed(this::handleDraw);
+		this.canvas.setOnMouseDragged(this::handleDraw);
+		
+		this.setOnKeyPressed(this::onKeyPressed);
+		
 		
 		this.affine = new Affine(); // for scaling up the picture that is drawn
-		this.affine.appendScale(400/10, 400/10);
+		this.affine.appendScale(400/10, 400/10); //Canvas Size divided by simulation size
 		
 		this.getChildren().addAll(this.stepButton, this.canvas); // To add all the elements to VBOX
 		
 		this.simulation = new Simulation(10, 10);
-		
-		simulation.setAlive(2, 2);
-		simulation.setAlive(3, 2);
-		simulation.setAlive(4, 2);
-		
-		simulation.setAlive(5, 5);
-		simulation.setAlive(5, 6);
-		simulation.setAlive(6, 6);
-		simulation.setAlive(4, 5);
-		
-		
 	} 
+	
+	private void onKeyPressed(KeyEvent event) {
+		if(event.getCode() == KeyCode.D) {
+			this.drawMode = 1;
+			System.out.println("Draw Mode");
+		}else if(event.getCode() == KeyCode.E) {
+			this.drawMode = 0;	
+			System.out.println("Erase  Mode");
+		}
+	}
+	
+	private void handleDraw(MouseEvent event) {
+		
+		// capture the co-ordinates where the mose is pressed
+		
+		double mouseX = event.getX();
+		double mouseY = event.getY();
+		
+		try {
+			 Point2D simCoord = this.affine.inverseTransform(mouseX,mouseY);
+			 		 
+			 int simX = (int) simCoord.getX();
+			 int simY = (int) simCoord.getY();
+			 System.out.println(simX + "--" + simY);
+			 this.simulation.setCellState(simX, simY, drawMode);; 
+			 draw();
+			 
+			
+		} catch (NonInvertibleTransformException e) {
+			// TODO Auto-generated catch block
+			System.out.println("could not invert transform");
+		}
+		
+	}
 	
 	public void draw() {
 		GraphicsContext g = this.canvas.getGraphicsContext2D();
