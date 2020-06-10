@@ -35,7 +35,7 @@
 						<option>-Djava.library.path=C:\Spring</option>
 					</options>
 					<executable>C:\openjdk11\jdk-11\bin\java.exe</executable>
-                    <mainClass>com.ajaya.golf.App</mainClass>
+                    <mainClass>com.ajaya.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
