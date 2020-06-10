@@ -1,7 +1,10 @@
 package com.ajaya;
 
 public class Simulation {
-	
+
+	public static int DEAD = 0;
+	public static int ALIVE = 1;
+
 	int width;
 	int height;
 	int[][] board;
@@ -31,17 +34,17 @@ public class Simulation {
 					
 						int aliveNeighbours = countAliveNeighbours(x,y);
 						
-						if(getCellState(x,y) == 1) { // Live Cell Conditions
+						if(getCellState(x,y) == ALIVE) { // Live Cell Conditions
 							if(aliveNeighbours < 2) //Under Population Condition
-								newBoard[x][y] = 0;
+								newBoard[x][y] = DEAD;
 							else if(aliveNeighbours == 2 || aliveNeighbours == 3) //Keeping Alive Condition
-								newBoard[x][y] = 1;
+								newBoard[x][y] = ALIVE;
 							else if(aliveNeighbours > 3) //Over Population Condition
-								newBoard[x][y] = 0;
+								newBoard[x][y] = DEAD;
 						}
 						else {
 							if(aliveNeighbours == 3) //Dead Cell Condition - More than three alive neighbours - Activate the Dead Cell
-								newBoard[x][y] = 1;
+								newBoard[x][y] = ALIVE;
 						}
 					
 					}
@@ -72,48 +75,43 @@ public class Simulation {
 	public int getCellState(int x, int y) {
 	
 		if(x < 0 || x >= width)
-			return 0;
+			return DEAD;
 		
 		if(y < 0 || y >= height)
-			return 0;
+			return DEAD;
 			
 		return this.board[x][y];
 	}
 	
-	public void printBoard() {
-		
-		System.out.println("---");
-		
-		//iterate line by line thats why selecting y-axis first
-		for (int y = 0; y < height; y++) {
-			
-			String line = "|";
-			
-			for (int x = 0; x < width; x++) {
-				
-				if(this.board[x][y] == 0)
-				{
-				   line += ".";
-				}
-				else {
-				   line += "*";
-				}
-			}
-			
-			line += "|";
-			System.out.println(line);
-			
-		}
-		
-		System.out.println("---\n");
-	}
+	
+	//This method is only for simulation of the solution using S.O.P function
+	/*
+	 * public void printBoard() {
+	 * 
+	 * System.out.println("---");
+	 * 
+	 * //iterate line by line thats why selecting y-axis first for (int y = 0; y <
+	 * height; y++) {
+	 * 
+	 * String line = "|";
+	 * 
+	 * for (int x = 0; x < width; x++) {
+	 * 
+	 * if(this.board[x][y] == 0) { line += "."; } else { line += "*"; } }
+	 * 
+	 * line += "|"; System.out.println(line);
+	 * 
+	 * }
+	 * 
+	 * System.out.println("---\n"); }
+	 */
 	
 	public void setAlive(int x, int y) {
-	    this.setCellState(x, y, 1);
+	    this.setCellState(x, y, ALIVE);
 	}
 
 	public void setDead(int x, int y) {
-		this.setCellState(x, y, 0);
+		this.setCellState(x, y, DEAD);
 	}
 	
 	//Preventing the setting a cell state functionality if it goes away from the board boundaries
