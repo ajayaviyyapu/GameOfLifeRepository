@@ -1,4 +1,4 @@
-package com.ajaya.golf;
+package com.ajaya;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
